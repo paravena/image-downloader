@@ -1,14 +1,10 @@
 package com.mtt.image_downloader;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.URI;
 
 public class ContentReader {
@@ -23,23 +19,12 @@ public class ContentReader {
         return instance;
     }
 
-    public String readContent(URI url) throws ImageDownloaderException {
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(url);
-        HttpResponse response;
-
-        StringWriter sw = new StringWriter();
+    public Elements readContent(URI url) throws ImageDownloaderException {
         try {
-            response = client.execute(request);
-            BufferedReader rd = new BufferedReader(
-                    new InputStreamReader(response.getEntity().getContent()));
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                sw.append(line);
-            }
+            Document document = Jsoup.connect(url.toString()).get();
+            return document.select("img");
         } catch (IOException ex) {
             throw new ImageDownloaderException(ex);
         }
-        return sw.toString();
     }
 }

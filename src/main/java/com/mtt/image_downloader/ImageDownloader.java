@@ -1,6 +1,6 @@
 package com.mtt.image_downloader;
 
-import java.io.*;
+import java.io.File;
 import java.net.URI;
 
 public class ImageDownloader {
@@ -11,6 +11,6 @@ public class ImageDownloader {
     }
 
     public void downloadImages(URI url, File outputFolder) throws ImageDownloaderException {
-        String content = contentReader.readContent(url);
+        contentReader.readContent(url);
     }
 }

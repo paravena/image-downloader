@@ -41,11 +41,13 @@ public class Start {
                     outputFolder = new File(output);
                 }
             }
-        } catch (ParseException | URISyntaxException e) {
+
+            new ImageDownloader().downloadImages(url, outputFolder);
+        } catch (ParseException | URISyntaxException | ImageDownloaderException e) {
             e.printStackTrace(System.out);
         }
 
-        new ImageDownloader().downloadImages(url, outputFolder);
+
     }
 
     public static void help(Options options) {
