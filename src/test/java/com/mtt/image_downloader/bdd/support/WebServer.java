@@ -17,6 +17,14 @@ public class WebServer extends NanoHTTPD {
         this.content = content;
     }
 
+    public WebServer(int port) {
+        super(port);
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public Response serve(IHTTPSession session) {
         System.out.println(session.getUri());

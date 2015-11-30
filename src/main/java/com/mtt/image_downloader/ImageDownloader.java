@@ -51,7 +51,7 @@ public class ImageDownloader {
 
     private String extractImageNameFromUrl(String imageUrl) {
         String imageName = imageUrl;
-        String regex = "\\/?(\\w+?)\\.\\w{3}$";
+        String regex = "\\/?(\\w+?)(\\.\\w{3})?$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(imageUrl);
         if (matcher.find()) {
@@ -77,8 +77,8 @@ public class ImageDownloader {
         return resizeImage;
     }
 
-    private int calculateHeightAccordingToWidthRatio(int width, int height, int newWidth) {
-        double ratio = width / newWidth;
+    private int calculateHeightAccordingToWidthRatio(double width, double height, int newWidth) {
+        double ratio = newWidth / width;
         return new Double(height * ratio).intValue();
     }
 
