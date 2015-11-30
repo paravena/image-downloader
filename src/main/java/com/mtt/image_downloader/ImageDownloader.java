@@ -35,7 +35,7 @@ public class ImageDownloader {
         try {
             String imageName = utility.extractImageNameFromUrl(imageUrl);
             BufferedImage originalImage = ImageIO.read(new URL(imageUrl));
-            if (originalImage == null) return;
+            if (!isValidImage(originalImage)) return;
             // saving  original image
             saveImageInOutputFolder(originalImage, imageName, "jpg");
             saveImageInOutputFolder(originalImage, imageName, "png");
@@ -53,6 +53,9 @@ public class ImageDownloader {
         }
     }
 
+    private boolean isValidImage(BufferedImage image) {
+        return image != null && image.getWidth() > 10 && image.getHeight() > 10;
+    }
 
     private void saveImageInOutputFolder(BufferedImage resizeImage, String imageName, String format) throws IOException {
         File outputFile = new File(outputFolder + File.separator + imageName + "." + format);

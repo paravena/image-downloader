@@ -16,12 +16,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 public class ImageDownloaderSteps {
     private WebServer webServer;
     private List<String> imageUrls;
     private Utility utility;
+    private String outputFolder;
 
     @Before
     public void initialize() throws IOException {
@@ -49,9 +51,10 @@ public class ImageDownloaderSteps {
         webServer.setContent(sb.toString());
     }
 
-    @When("^I start the image downloader$")
-    public void startImageDownloader() {
-        Start.main(new String[] {"-url", "http://localhost:9090/content", "-out", "/tmp"});
+    @When("^I start the image downloader saving images in folder (.+)$")
+    public void startImageDownloader(String outputFolder) {
+        this.outputFolder = outputFolder;
+        Start.main(new String[] {"-url", "http://localhost:9090/content", "-out", outputFolder});
         try {
             Thread.sleep(5000L);
         } catch (InterruptedException ex) {
@@ -59,22 +62,19 @@ public class ImageDownloaderSteps {
         }
     }
 
-    @Then("^All images defined in the web page are downloaded$")
-    public void shouldDownloadAllImages() {
-        for (String imageUrl : imageUrls) {
-            String imageName = utility.extractImageNameFromUrl(imageUrl);
-            assertTrue(new File("/tmp/" + imageName + ".jpg").exists());
-            assertTrue(new File("/tmp/" + imageName + ".png").exists());
-        }
-    }
-
-    @Then("^For each image downloaded I have three different dimensions with two formats jpg and png$")
-    public void shouldBeThreeDifferentDimensionsForEachImageDownloaded() {
-        for (String imageUrl : imageUrls) {
-            String imageName = utility.extractImageNameFromUrl(imageUrl);
-            for (int width : ImageDownloader.RESIZE_WIDTHS) {
-                assertTrue(new File("/tmp/" + imageName + "_" + width + ".jpg").exists());
-                assertTrue(new File("/tmp/" + imageName + "_" + width +  ".png").exists());
+    @Then("^Following images (should|should not) be downloaded:$")
+    public void shouldDownloadAllImages(String should, DataTable dataTable) {
+        boolean shouldBeSaved = "should".equals(should);
+        List<String> imageFiles = dataTable.asList(String.class);
+        if (shouldBeSaved) {
+            for (String imageFile : imageFiles) {
+                assertTrue(new File(outputFolder + File.separator + imageFile).exists());
+                assertTrue(new File(outputFolder + File.separator + imageFile).exists());
+            }
+        } else {
+            for (String imageFile : imageFiles) {
+                assertFalse(new File(outputFolder + File.separator + imageFile).exists());
+                assertFalse(new File(outputFolder + File.separator + imageFile).exists());
             }
         }
     }
