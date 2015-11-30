@@ -31,7 +31,7 @@ public class ImageDownloader {
         }
     }
 
-    private void processImage(String imageUrl) throws ImageDownloaderException {
+    void processImage(String imageUrl) throws ImageDownloaderException {
         try {
             String imageName = utility.extractImageNameFromUrl(imageUrl);
             BufferedImage originalImage = ImageIO.read(new URL(imageUrl));
@@ -53,16 +53,16 @@ public class ImageDownloader {
         }
     }
 
-    private boolean isValidImage(BufferedImage image) {
+    boolean isValidImage(BufferedImage image) {
         return image != null && image.getWidth() > 10 && image.getHeight() > 10;
     }
 
-    private void saveImageInOutputFolder(BufferedImage resizeImage, String imageName, String format) throws IOException {
+    void saveImageInOutputFolder(BufferedImage resizeImage, String imageName, String format) throws IOException {
         File outputFile = new File(outputFolder + File.separator + imageName + "." + format);
         ImageIO.write(resizeImage, format, outputFile);
     }
 
-    private BufferedImage resizeImage(BufferedImage originalImage, int newWidth, int newHeight) {
+    BufferedImage resizeImage(BufferedImage originalImage, int newWidth, int newHeight) {
         BufferedImage resizeImage = new BufferedImage(newWidth, newHeight, originalImage.getType());
         Graphics2D g = resizeImage.createGraphics();
         g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
