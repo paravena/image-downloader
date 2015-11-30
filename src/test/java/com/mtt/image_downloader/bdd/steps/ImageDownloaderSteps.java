@@ -19,20 +19,19 @@ public class ImageDownloaderSteps {
         List<String> imageUrls = dataTable.asList(String.class);
         StringBuilder sb = new StringBuilder("<html><body>");
         sb.append("<p>following images must be downloaded:</b>");
-        sb.append("<br>");
-        sb.append("<br>");
-        sb.append("<br>");
+        sb.append("<br/>");
         for (String imageUrl : imageUrls) {
             sb.append("<img src=\"").append(imageUrl).append("\">");
+            sb.append("<br/>");
         }
         sb.append("</body></html>");
         webServer = new WebServer(sb.toString(), 9090);
-        webServer.start();
+        webServer.start(5000, false);
     }
 
     @When("^I start the image downloader$")
     public void startImageDownloader() {
-        Start.main(new String[] {"-url", "http://localhost:9090"});
+        Start.main(new String[] {"-url", "http://localhost:9090/content", "-out", "/tmp"});
         try {
             Thread.sleep(5000L);
         } catch (InterruptedException ex) {

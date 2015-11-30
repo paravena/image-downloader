@@ -3,9 +3,9 @@ Feature: Image Downloader
 
   Scenario: Downloading images
     Given I have a url for a web page with following images:
-      |http://placehold.it/350x150.jpg|
-      |http://placehold.it/500x200.jpg|
-      |http://placehold.it/300x200.jpg|
+      |http://localhost:9090/coyote|
+      |http://localhost:9090/silvestre|
+      |http://localhost:9090/patolucas|
     When I start the image downloader
     Then All images defined in the web page are downloaded
     And For each image downloaded I have three different dimensions

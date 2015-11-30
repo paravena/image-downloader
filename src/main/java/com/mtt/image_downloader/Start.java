@@ -42,7 +42,7 @@ public class Start {
                 }
             }
 
-            new ImageDownloader().downloadImages(url, outputFolder);
+            new ImageDownloader(outputFolder).downloadImages(url);
         } catch (ParseException | URISyntaxException | ImageDownloaderException e) {
             e.printStackTrace(System.out);
         }
