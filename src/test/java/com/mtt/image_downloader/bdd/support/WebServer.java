@@ -2,10 +2,8 @@ package com.mtt.image_downloader.bdd.support;
 
 import fi.iki.elonen.NanoHTTPD;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

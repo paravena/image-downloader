@@ -8,5 +8,4 @@ Feature: Image Downloader
       |http://localhost:9090/lukasduck|
     When I start the image downloader
     Then All images defined in the web page are downloaded
-    And For each image downloaded I have three different dimensions
-    And For each image downloaded I have two different formats
+    And For each image downloaded I have three different dimensions with two formats jpg and png

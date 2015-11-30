@@ -5,22 +5,21 @@ import org.jsoup.select.Elements;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ImageDownloader {
+    public static int[] RESIZE_WIDTHS = new int[] {100, 220, 320};
     protected ContentReader contentReader;
+    protected Utility utility;
     protected File outputFolder;
-    protected int[] resizeWidths = new int[] {100, 220, 320};
 
     public ImageDownloader(File outputFolder) {
         this.contentReader = ContentReader.getInstance();
+        this.utility = Utility.getInstance();
         this.outputFolder = outputFolder;
     }
 
@@ -34,13 +33,18 @@ public class ImageDownloader {
 
     private void processImage(String imageUrl) throws ImageDownloaderException {
         try {
-            String imageName = extractImageNameFromUrl(imageUrl);
+            String imageName = utility.extractImageNameFromUrl(imageUrl);
             BufferedImage originalImage = ImageIO.read(new URL(imageUrl));
-            for (int newWidth : resizeWidths) {
-                int newHeight = calculateHeightAccordingToWidthRatio(originalImage.getWidth(),
+            if (originalImage == null) return;
+            // saving  original image
+            saveImageInOutputFolder(originalImage, imageName, "jpg");
+            saveImageInOutputFolder(originalImage, imageName, "png");
+            for (int newWidth : RESIZE_WIDTHS) {
+                int newHeight = utility.calculateHeightAccordingToWidthRatio(originalImage.getWidth(),
                         originalImage.getHeight(),
                         newWidth);
                 BufferedImage resizeImage = resizeImage(originalImage, newWidth, newHeight);
+                // saving resize image
                 saveImageInOutputFolder(resizeImage, imageName + "_" + newWidth, "jpg");
                 saveImageInOutputFolder(resizeImage, imageName + "_" + newWidth, "png");
             }
@@ -49,16 +53,6 @@ public class ImageDownloader {
         }
     }
 
-    private String extractImageNameFromUrl(String imageUrl) {
-        String imageName = imageUrl;
-        String regex = "\\/?(\\w+?)(\\.\\w{3})?$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(imageUrl);
-        if (matcher.find()) {
-            imageName = matcher.group(1);
-        }
-        return imageName;
-    }
 
     private void saveImageInOutputFolder(BufferedImage resizeImage, String imageName, String format) throws IOException {
         File outputFile = new File(outputFolder + File.separator + imageName + "." + format);
@@ -76,10 +70,4 @@ public class ImageDownloader {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         return resizeImage;
     }
-
-    private int calculateHeightAccordingToWidthRatio(double width, double height, int newWidth) {
-        double ratio = newWidth / width;
-        return new Double(height * ratio).intValue();
-    }
-
 }
