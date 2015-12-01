@@ -57,3 +57,14 @@ save them into disc with two different formats (png and jpeg).
 
 ## Testing
 
+### Component Tests
+
+> Component tests were implemented using cucumber. One problem was how to simulate a web server from were to download
+> a web page, and then process their images. The way I did it was using [NanoHTTPD](http://nanohttpd.org/) web server.
+> this support component is defined in WebServer class.
+
+### Unit Tests
+
+> The majority of the classes are covered with unit tests. One of the problem I faced was how to test static method
+> specifically the methods provided by ImageIO class. For solving this issue I used [Powermock](https://code.google.com/p/powermock/)
+> library.
