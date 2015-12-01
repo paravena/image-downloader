@@ -3,15 +3,8 @@ package com.mtt.image_downloader;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.imageio.ImageIO;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 
 public class ImageDownloader {
     protected ContentReader contentReader;
@@ -25,12 +18,13 @@ public class ImageDownloader {
     }
 
     public void downloadImages(URI url) throws ImageDownloaderException {
-        Elements elements = contentReader.readContent(url);
-
+        boolean proceed = true;
         if (!outputFolder.exists()) {
-            outputFolder.mkdir();
+            proceed = outputFolder.mkdir();
         }
+        if (!proceed) return;
 
+        Elements elements = contentReader.readContent(url);
         for (Element element : elements) {
             String imageUrl = element.attr("src");
             imageProcessor.processImage(imageUrl, outputFolder);
