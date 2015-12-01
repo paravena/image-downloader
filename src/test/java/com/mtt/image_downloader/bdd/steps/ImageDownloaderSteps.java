@@ -1,11 +1,8 @@
 package com.mtt.image_downloader.bdd.steps;
 
-import com.mtt.image_downloader.ImageDownloader;
 import com.mtt.image_downloader.Start;
-import com.mtt.image_downloader.Utility;
 import com.mtt.image_downloader.bdd.support.WebServer;
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -21,15 +18,12 @@ import static junit.framework.TestCase.assertTrue;
 
 public class ImageDownloaderSteps {
     private WebServer webServer;
-    private List<String> imageUrls;
-    private Utility utility;
     private String outputFolder;
 
     @Before
     public void initialize() throws IOException {
         webServer = new WebServer(9090);
         webServer.start(50000, false);
-        utility = Utility.getInstance();
     }
 
     @After
@@ -39,7 +33,7 @@ public class ImageDownloaderSteps {
 
     @Given("^I have a url for a web page with following images:$")
     public void createWebPage(DataTable dataTable) throws IOException {
-        imageUrls = dataTable.asList(String.class);
+        List<String> imageUrls = dataTable.asList(String.class);
         StringBuilder sb = new StringBuilder("<html><body>");
         sb.append("<p>following images must be downloaded:</b>");
         sb.append("<br/>");

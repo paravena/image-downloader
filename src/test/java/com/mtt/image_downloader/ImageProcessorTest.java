@@ -23,12 +23,14 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ImageIO.class)
-public class ImageDownloaderTest {
-    private ImageDownloader imageDownloader;
+public class ImageProcessorTest {
+    private ImageProcessor imageProcessor;
+    private File outputFolder;
 
     @Before
     public void initialize() {
-        imageDownloader = new ImageDownloader(new File("/tmp"));
+        imageProcessor = ImageProcessor.getInstance();
+        outputFolder = new File("/tmp");
         mockStatic(ImageIO.class);
     }
 
@@ -38,8 +40,8 @@ public class ImageDownloaderTest {
         String imageUrl = "http://some-server.com/image.jpg";
         when(ImageIO.read(eq(new URL(imageUrl)))).thenReturn(bufferedImage);
         when(ImageIO.write(any(BufferedImage.class), anyString(), any(File.class))).thenReturn(true);
-        imageDownloader.processImage(imageUrl);
-        assertTrue(imageDownloader.isValidImage(bufferedImage));
+        imageProcessor.processImage(imageUrl, outputFolder);
+        assertTrue(imageProcessor.isValidImage(bufferedImage));
         verifyStatic(times(1));
         ImageIO.write(eq(bufferedImage), eq("jpg"), eq(new File("/tmp/image.jpg")));
         verifyStatic(times(1));
