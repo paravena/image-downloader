@@ -26,6 +26,11 @@ public class ImageDownloader {
 
     public void downloadImages(URI url) throws ImageDownloaderException {
         Elements elements = contentReader.readContent(url);
+
+        if (!outputFolder.exists()) {
+            outputFolder.mkdir();
+        }
+
         for (Element element : elements) {
             String imageUrl = element.attr("src");
             imageProcessor.processImage(imageUrl, outputFolder);
