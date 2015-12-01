@@ -17,7 +17,6 @@ public class Utility {
 
     }
 
-
     public String extractImageNameFromUrl(String imageUrl) {
         String imageName = imageUrl;
         String regex = "\\/?(\\w+?)(\\.\\w{3})?$";

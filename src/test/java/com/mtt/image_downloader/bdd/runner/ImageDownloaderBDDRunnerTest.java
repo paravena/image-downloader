@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         format = { "pretty", "html:target/cucumber" },
-        features = "classpath:cucumber/robot.feature",
+        features = "classpath:cucumber/image_downloader.feature",
         glue = {"com.mtt.image_downloader.bdd"}
 )
 public class ImageDownloaderBDDRunnerTest {
