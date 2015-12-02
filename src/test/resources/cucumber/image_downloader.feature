@@ -37,6 +37,7 @@ Feature: Image Downloader
   Scenario: Downloading images but not all are saved
     Given I have a url for a web page with following images:
       |http://localhost:9090/sylvester|
+      |http://localhost:9090/404|
       |http://localhost:9090/tiny|
     When I start the image downloader saving the images in folder /tmp
     Then Following images should be downloaded:
@@ -45,6 +46,8 @@ Feature: Image Downloader
     Then Following images should not be downloaded:
       |tiny.jpg|
       |tiny.png|
+      |404.jpg|
+      |404.png|
     And Following images should be created:
       |sylvester_100.jpg|
       |sylvester_100.png|
