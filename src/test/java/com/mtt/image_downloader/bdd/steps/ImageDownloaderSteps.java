@@ -45,7 +45,7 @@ public class ImageDownloaderSteps {
         webServer.setContent(sb.toString());
     }
 
-    @When("^I start the image downloader saving images in folder (.+)$")
+    @When("^I start the image downloader saving the images in folder (.+)$")
     public void startImageDownloader(String outputFolder) {
         this.outputFolder = outputFolder;
         Start.main(new String[] {"-url", "http://localhost:9090/content", "-out", outputFolder});
@@ -56,8 +56,8 @@ public class ImageDownloaderSteps {
         }
     }
 
-    @Then("^Following images (should|should not) be downloaded:$")
-    public void shouldDownloadAllImages(String should, DataTable dataTable) {
+    @Then("^Following images (should|should not) be (downloaded|created):$")
+    public void shouldDownloadAllImages(String should, String downloaded, DataTable dataTable) {
         boolean shouldBeSaved = "should".equals(should);
         List<String> imageFiles = dataTable.asList(String.class);
         if (shouldBeSaved) {

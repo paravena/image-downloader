@@ -8,8 +8,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Start {
 
@@ -20,7 +20,7 @@ public class Start {
         options.addOption("h", "help", false, "Help");
         options.addOption("v", "version", false, "Version");
         CommandLineParser parser = new DefaultParser();
-        URI url = null;
+        URL url = null;
         File outputFolder = new File("output");
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -33,7 +33,7 @@ public class Start {
             } else {
                 if (cmd.hasOption("url")) {
                     String webPageUrl = cmd.getOptionValue("url");
-                    url = new URI(webPageUrl);
+                    url = new URL(webPageUrl);
                 }
 
                 if (cmd.hasOption("out")) {
@@ -43,7 +43,7 @@ public class Start {
             }
 
             new ImageDownloader(outputFolder).downloadImages(url);
-        } catch (ParseException | URISyntaxException | ImageDownloaderException e) {
+        } catch (ParseException | MalformedURLException | ImageDownloaderException e) {
             e.printStackTrace(System.out);
         }
 

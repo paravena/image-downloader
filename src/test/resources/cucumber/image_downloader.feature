@@ -6,7 +6,7 @@ Feature: Image Downloader
       |http://localhost:9090/coyote|
       |http://localhost:9090/sylvester|
       |http://localhost:9090/lukasduck|
-    When I start the image downloader saving images in folder /tmp
+    When I start the image downloader saving the images in folder /tmp
     Then Following images should be downloaded:
       |coyote.jpg|
       |coyote.png|
@@ -14,7 +14,7 @@ Feature: Image Downloader
       |sylvester.png|
       |lukasduck.png|
       |lukasduck.jpg|
-    And Following images should be downloaded:
+    And Following images should be created:
       |coyote_100.jpg|
       |coyote_100.png|
       |coyote_220.jpg|
@@ -38,14 +38,14 @@ Feature: Image Downloader
     Given I have a url for a web page with following images:
       |http://localhost:9090/sylvester|
       |http://localhost:9090/tiny|
-    When I start the image downloader saving images in folder /tmp
+    When I start the image downloader saving the images in folder /tmp
     Then Following images should be downloaded:
       |sylvester.jpg|
       |sylvester.png|
     Then Following images should not be downloaded:
       |tiny.jpg|
       |tiny.png|
-    And Following images should be downloaded:
+    And Following images should be created:
       |sylvester_100.jpg|
       |sylvester_100.png|
       |sylvester_220.jpg|

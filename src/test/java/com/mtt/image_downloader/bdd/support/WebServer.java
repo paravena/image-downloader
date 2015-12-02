@@ -25,7 +25,6 @@ public class WebServer extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        System.out.println(session.getUri());
         if (session.getUri().endsWith("content")) {
             return newFixedLengthResponse(content);
         } else {
@@ -34,7 +33,6 @@ public class WebServer extends NanoHTTPD {
             Matcher matcher = pattern.matcher(session.getUri());
             if (matcher.find()) {
                 String fileName = matcher.group(1) + ".jpg";
-                System.out.println("fileName = " + fileName);
                 InputStream is = this.getClass().getClassLoader().getResourceAsStream("images/" + fileName);
                 return newFixedLengthResponse(Response.Status.OK, "image/jpeg", is, 10000000);
             }

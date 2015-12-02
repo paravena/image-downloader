@@ -20,8 +20,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 @RunWith(PowerMockRunner.class)
@@ -37,7 +36,7 @@ public class ContentReaderTest {
     }
 
     @Test
-    public void testReadContent() throws IOException, URISyntaxException, ImageDownloaderException {
+    public void testReadContent() throws ImageDownloaderException, IOException {
         Connection connection = mock(Connection.class);
         when(Jsoup.connect(anyString())).thenReturn(connection);
         String html = "<html><body>" +
@@ -47,16 +46,16 @@ public class ContentReaderTest {
                 "</body></html>";
         Document document = Parser.parse(html, "http://some-server.com");
         when(connection.get()).thenReturn(document);
-        Elements elements = contentReader.readContent(new URI("http://some-server.com"));
+        Elements elements = contentReader.readContent(new URL("http://some-server.com"));
         assertNotNull(elements);
         assertEquals(3, elements.size());
     }
 
     @Test(expected = ImageDownloaderException.class)
-    public void testReadContentFromWrongServer() throws URISyntaxException, ImageDownloaderException, IOException {
+    public void testReadContentFromWrongServer() throws ImageDownloaderException, IOException {
         Connection connection = mock(Connection.class);
         when(Jsoup.connect(anyString())).thenReturn(connection);
         when(connection.get()).thenThrow(new UnknownHostException("Server not found!!"));
-        contentReader.readContent(new URI("http://wrong-server.com"));
+        contentReader.readContent(new URL("http://wrong-server.com"));
     }
 }

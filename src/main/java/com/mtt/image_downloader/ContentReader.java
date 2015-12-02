@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.URI;
+import java.net.URL;
 
 public class ContentReader {
     private static ContentReader instance;
@@ -19,7 +19,7 @@ public class ContentReader {
         return instance;
     }
 
-    public Elements readContent(URI url) throws ImageDownloaderException {
+    public Elements readContent(URL url) throws ImageDownloaderException {
         try {
             Document document = Jsoup.connect(url.toString()).get();
             return document.select("img");
